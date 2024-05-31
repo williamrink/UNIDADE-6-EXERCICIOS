@@ -1,0 +1,50 @@
+import java.util.Scanner;
+
+public class Uni6Exe08 {
+     
+    private Uni6Exe08(){
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Digite um número inteiro de 1 a 20: ");
+        int valorN = teclado.nextInt();
+        while(valorN <  1 || valorN > 20){
+            System.out.println("\nVALOR INVÁLIDO!!!\nDIGITE UM NÚMERO ENTRE 1 E 20\n");
+            valorN = teclado.nextInt();
+        }
+        double[] vetor = new double[valorN];
+        int[] frequencias = new int[vetor.length];
+        inserirValores(vetor,frequencias,teclado);
+        imprimirTabela(vetor, frequencias);
+    }
+
+    private void inserirValores(double[] vetor,int[] frequencias, Scanner teclado){
+
+        for (int i = 0; i < vetor.length; i++) {
+            System.out.println("Digite um número para inserir no vetor:");
+            vetor[i] = teclado.nextDouble();
+        }
+        for (int i = 0; i < vetor.length; i++) {
+            frequencias[i] = 1;
+            for (int j = i + 1; j < vetor.length; j++) {
+                if (vetor[j] == vetor[i]){
+                    frequencias[i]++;
+                    vetor[j] = 0;
+                }
+            }
+        }
+    }
+    
+    private void imprimirTabela(double[] vetor, int[] frequencias){
+        
+        System.out.println("Tabela de valores:");
+        System.out.println("Valor |\tFrequência");
+        for (int i = 0; i < vetor.length; i++) {
+            if (vetor[i] != 0) {
+                System.out.printf("%.2f  |\t %d%n",vetor[i],frequencias[i]);
+            }
+        }
+    }  
+
+    public static void main(String[] args) {
+        new Uni6Exe08();
+    }
+}
