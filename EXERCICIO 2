@@ -1,0 +1,40 @@
+import java.util.Scanner;
+
+public class Uni6Exe2 {
+
+    private Uni6Exe2(){
+        Scanner teclado = new Scanner(System.in);
+        double[] vetorReal = new double[12];
+        double somaReais = 0;
+        double media = 0;
+
+        lerValores(teclado, vetorReal, somaReais);
+        calcularMedia(somaReais, vetorReal);
+        informarValoresMaiores(vetorReal, media);
+
+    }
+
+    private void lerValores(Scanner teclado, double[] vetorReal, double somaReais){
+        
+        for (int i = 0; i < vetorReal.length; i++) {
+            System.out.println("Insira um valor real: ");
+            double valorReal = teclado.nextDouble();
+            vetorReal[i] = valorReal;
+            somaReais += valorReal;
+        }
+    }
+
+    private double calcularMedia(double somaReais, double[] vetorReal){
+        
+        return somaReais/vetorReal.length;
+    }
+
+    private void informarValoresMaiores(double[] vetorReal, double media){
+
+        System.out.println("Valores maiores que a média: ");
+        for (int i = 0; i < vetorReal.length; i++) {
+            if(vetorReal[i] > media){
+                System.out.print(vetorReal[i] + " ");
+            }
+        }
+    }
