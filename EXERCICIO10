@@ -1,0 +1,198 @@
+import java.util.Scanner;
+
+public class Uni6Exe10 extends Thread{
+
+    private Uni6Exe10(){
+        Scanner teclado = new Scanner(System.in);
+
+        int[] vetor = new int[8];
+        for (int i = 0; i < vetor.length; i++) {
+            vetor[i] = Integer.MIN_VALUE;
+        }
+
+        Menu(teclado, vetor);
+
+        System.out.print("SAINDO");
+        try {
+            for (int i = 0; i < 3; i++) {
+                Thread.sleep(700);
+                System.out.print(" .");
+            }
+        }catch (Exception e) {
+           System.out.println(e);
+        }
+    }
+
+    private void Menu(teclado teclado, int[] vetor){
+
+        boolean flag = true;
+        while (flag) {
+            System.out.println("\n(1) Incluir valor\n(2) Pesquisar valor\n(3) Alterar valor\n(4) Excluir valor");
+            System.out.println("(5) Mostrar valores\n(6) Ordenar valores\n(7) Inverter valores\n(8) Sair do sistema");
+            
+            switch (teclado.nextInt()) {
+                case 1:
+                    System.out.println(incluirValor(vetor, teclado)); 
+                    break;
+                case 2:
+                    System.out.println(pesquisarValor(vetor, teclado));
+                    break;
+                case 3:
+                    System.out.println(alterarValor(vetor, teclado));
+                    break;
+                case 4:
+                    System.out.println(excluirValor(vetor, teclado));
+                    break;
+                    case 5:
+                    mostrarValores(vetor);
+                    break;
+                    case 6:
+                    ordenarValores(vetor, teclado);
+                    break;
+                    case 7:
+                    inverterValores(vetor);
+                    break;
+                    
+                    case 8:
+                    flag = false;
+                    break;
+                    default:
+                    System.out.println("Opção inválida!!\nDigite de 1 a 8");
+                    break;
+                }
+            }
+        }
+    private String incluirValor(int[] vetor, Scanner teclado){
+        System.out.println("\nDigite o valor que deseja incluir: ");
+        int valor = teclado.nextInt();
+        for (int i = vetor.length - 1; i >= 0; i--) {
+            if(vetor[i] == Integer.MIN_VALUE){
+                vetor[i] = valor;
+                return "\n\tValor adicionado com sucesso";
+            }
+        }
+        return "\n\tValor não adicionado pois o vetor já está cheio";
+    }
+
+    private String pesquisarValor(int[] vetor, Scanner teclado){
+        System.out.println("Digite o valor que deseja pesquisar: ");
+        int valor = teclado.nextInt();
+        for (int i = vetor.length - 1; i >= 0; i--) {
+            if(vetor[i] == valor){
+                return "\tEste valor está no vetor";
+            }
+        }
+        return "\tValor não encontrado no vetor";
+    }
+    private String alterarValor(int[] vetor, Scanner teclado){
+        System.out.println("Digite o valor que deseja alterar: ");
+        int valor = teclado.nextInt();
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] == valor){
+                System.out.println("Digite o novo valor: ");
+                vetor[i] = teclado.nextInt();
+                return "\tValor alterado com sucesso";
+            }
+        }
+        return "\tValor não encontrado no vetor";
+    }
+    private String excluirValor(int[] vetor, Scanner teclado){
+        System.out.println("Digite o valor que deseja excluir: ");
+        int valor = teclado.nextInt();
+        boolean excluidoSucesso = false;
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] == valor){
+                if(i == vetor.length-1){
+                    vetor[i] = Integer.MIN_VALUE;
+                }else{
+                    valor = vetor[i+1];
+                    vetor[i] = vetor[i+1];
+                }
+                excluidoSucesso = true;
+            }
+        }
+        return (excluidoSucesso ? "\tValor excluído com sucesso" : "\tValor não encontrado");
+    }
+
+    private void mostrarValores(int[] vetor){
+        System.out.print("\tVetor atual: ");
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] != Integer.MIN_VALUE){
+                System.out.print(vetor[i] + " ");
+            }else{
+                System.out.print("_ ");
+            }
+        }
+        System.out.println(" ");
+    }
+
+    private void ordenarValores(int[] vetor, Scanner teclado){
+
+        System.out.println("Ordem: (1) Crescente / (2) Decrescente");
+        int op = teclado.nextInt();
+        while (op < 1 || op > 2) {
+            System.out.println("Opção inválida!!!\nDigite apenas 1 ou 2");
+            op = teclado.nextInt();
+        }
+
+        for (int i = 0; i < vetor.length; i++) {
+
+            for (int j = 0; j < vetor.length - 1; j++) {
+
+                if((op == 2 ? vetor[j] < vetor[j+1] : vetor[j] > vetor[j+1])){
+                    int varAux = vetor[j];        //varAux = variável auxiliar
+                    vetor[j] = vetor[j + 1];
+                    vetor[j + 1] = varAux;
+                }
+            }
+        }
+        String string = (op == 1 ? "crescente" : "decrescente");
+        System.out.printf("\tVetor reorganizado em ordem %s com sucesso\n", string);
+    }
+    
+
+    
+    private void inverterValores(int[] vetor){
+        int espacosVazios = 0;
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] == Integer.MIN_VALUE){
+                espacosVazios++;
+            }
+        }
+        int[] vetorInvertido = new int[vetor.length - espacosVazios];
+
+        int indice = 0;
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] == Integer.MIN_VALUE){
+                continue;
+            }else{                                   //crio um vetor igual o original sem os valores vazios
+                vetorInvertido[indice] = vetor[i];
+                indice++;
+            }
+        }
+
+        for (int j = 0; j < (vetorInvertido.length-1)-j; j++) {
+                                                    //inverto ele
+                int varAux = vetorInvertido[j];
+                vetorInvertido[j] = vetorInvertido[(vetorInvertido.length-1)-j];
+                vetorInvertido[(vetorInvertido.length-1)-j] = varAux;
+        }
+
+
+        for (int i = 0; i < vetorInvertido.length; i++) {
+                                                    
+            for (int j = i; j < vetor.length ; j++) {
+                if(vetor[j] != Integer.MIN_VALUE){
+                    vetor[j] = vetorInvertido[i];
+                    i++;                            //substituo os valores nao-vazios pelo vetor invertido
+                }
+            }
+        }
+        System.out.println("\tValores do vetor invertidos com sucesso");
+    }
+    
+    
+    public static void main(String[] args) {
+        new Uni6Exe10();
+    }
+}
