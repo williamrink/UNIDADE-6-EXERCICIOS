@@ -1,0 +1,98 @@
+import java.util.Scanner;
+
+public class Uni6Exe09 {
+
+    private Uni6Exe09(){
+        Scanner teclado = new Scanner(System.in);
+        int[][] mulheres = new int[30][2];
+        int totalVotos = 0;
+        int somaNotas = 0;
+        int totalHomens = 0;
+        int somaNotasHomens = 0;
+        iniciarPesquisa(totalVotos, somaNotas, totalHomens, somaNotasHomens, mulheres, teclado);
+    }
+
+    private void iniciarPesquisa(int totalVotos, int somaNotas, int totalHomens, int somaNotasHomens,int[][]mulheres, Scanner teclado){
+        int indiceMulher = -1;
+        for (int i = 0; i < 30; i++) {
+            System.out.println("\nSexo: (1) Feminino / (2) Masculino");
+            switch (teclado.nextInt()) {
+                case 1:
+                    System.out.println("Nota 0-10 para o cinema: ");
+                    int nota = teclado.nextInt();
+                    nota = verificaNota(nota, teclado);
+                    indiceMulher++;
+                    votanteMulher(mulheres, teclado, nota, indiceMulher);
+                    totalVotos++;
+                    somaNotas += nota;
+                    break;
+                case 2:
+                    System.out.println("Nota 0-10 para o cinema: ");
+                    nota = teclado.nextInt();
+                    nota = verificaNota(nota, teclado);
+                    votanteHomem(teclado, nota);
+                    totalVotos++;
+                    totalHomens++;
+                    somaNotas += nota;
+                    somaNotasHomens += nota;
+                    break;
+            
+                default: 
+                    System.out.println("Valor inválido, digite apenas 1 ou 2");
+                    i--;
+                    break;
+            }
+        }
+        calculosComResultados(totalVotos, somaNotas, totalHomens, somaNotasHomens, mulheres);
+    }
+    
+    private void votanteMulher(int[][] mulheres, Scanner teclado, int nota, int indice){
+        System.out.println("Idade: ");
+        int idade = teclado.nextInt();
+        mulheres[indice] = new int[]{nota, idade};
+    }
+    private void votanteHomem(Scanner teclado, int nota){
+        System.out.println("Idade: ");
+        int idade = teclado.nextInt();
+    }
+    private int verificaNota(int nota, Scanner teclado){
+        while(nota < 0 || nota > 10){
+            System.out.println("NOTA INVÁLIDA");
+            System.out.println("Digite uma nota de 0 a 10");
+            nota = teclado.nextInt();
+        }
+        return nota;
+    }
+    
+    private void calculosComResultados(int totalVotos, int somaNotas, int totalHomens, int somaNotasHomens, int[][] mulheres){
+        double mediaGeral = (double)somaNotas/totalVotos;
+        double mediaHomens = (double)somaNotasHomens/totalHomens;
+        int idadeMulherJovem = 150;
+        int[] mulherJovem = new int[2];
+        int qtdMulheres50 = 0;
+        
+        for (int i = 0; i < mulheres.length; i++) {
+            if(mulheres[i][1] < idadeMulherJovem && mulheres[i][1] > 0){
+                mulherJovem[0] = mulheres[i][0];
+                mulherJovem[1] = mulheres[i][1];
+                idadeMulherJovem = mulheres[i][1];
+            }
+            if(mulheres[i][1] > 50 && mulheres[i][0] > mediaGeral){
+                qtdMulheres50++;
+            }
+        }
+        informarResultados(totalVotos,mediaGeral,mediaHomens,mulherJovem,qtdMulheres50);
+    }
+    
+    private void informarResultados(int totalVotos,double mediaGeral,double mediaHomens,int[] mulherJovem,int qtdMulheres50){
+        System.out.println("\nTotal votos: " + totalVotos);
+        System.out.printf("Nota média recebida pelo cinema: %.2f", mediaGeral);
+        System.out.printf("\nNota média atribuída pelos homens: %.2f", mediaHomens);
+        System.out.printf("\nMulher mais jovem: %d anos. Nota dela: %d", mulherJovem[1], mulherJovem[0]);
+        System.out.printf("\nMulheres 50+ com nota superior a %.2f: %d%n", mediaGeral, qtdMulheres50);
+    }
+
+    public static void main(String[] args) {
+        new Uni6Exe09();
+    }
+}
