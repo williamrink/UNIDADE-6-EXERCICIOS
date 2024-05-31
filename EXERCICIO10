@@ -23,7 +23,7 @@ public class Uni6Exe10 extends Thread{
         }
     }
 
-    private void Menu(teclado teclado, int[] vetor){
+    private void Menu(Scanner teclado, int[] vetor){
 
         boolean flag = true;
         while (flag) {
