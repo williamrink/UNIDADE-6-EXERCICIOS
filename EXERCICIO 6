@@ -1,0 +1,34 @@
+import java.util.Scanner;
+
+public class Uni6Exe06 {
+
+    private Uni6Exe06(){
+        Scanner teclado = new Scanner(System.in);
+        System.out.println("Informe um valor inteiro: ");
+        double[] vetor = new double[teclado.nextInt()];
+        popularVetor(vetor, teclado);
+        System.out.println("\nInsira um valor real: ");
+        System.out.println(encontrarValor(vetor, teclado.nextDouble()));
+    }
+
+    private void popularVetor(double[] vetor, Scanner teclado){
+        for (int i = 0; i < vetor.length; i++) {
+            System.out.println("Insira um valor real para adicionar ao vetor");
+            vetor[i] = teclado.nextDouble();
+        }
+    }
+
+    private boolean encontrarValor(double[] vetor, double valor){
+        boolean result = false;
+        for (int i = 0; i < vetor.length; i++) {
+            if(vetor[i] == valor){
+                result = true;
+            }
+        }
+        return result;
+    }
+
+    public static void main(String[] args) {
+        new Uni6Exe06();
+    }
+}
